@@ -1,0 +1,61 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile information",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string" },
+        "displayName": { "type": "string" },
+        "photoURL": { "type": "string" },
+        "challengeGoal": { "type": "number", "description": "Target challenge length (e.g., 60 or 365)" },
+        "currentStreak": { "type": "number", "description": "Current consecutive days of 100% completion" },
+        "bestStreak": { "type": "number", "description": "Best consecutive days of 100% completion" },
+        "badges": { "type": "array", "items": { "type": "string" }, "description": "List of earned badges" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email"]
+    },
+    "Task": {
+      "title": "Task",
+      "description": "User defined task to track",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "label": { "type": "string" },
+        "icon": { "type": "string" },
+        "color": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "label"]
+    },
+    "DailyLog": {
+      "title": "DailyLog",
+      "description": "Daily task completion status",
+      "type": "object",
+      "properties": {
+        "date": { "type": "string", "description": "ISO date string (YYYY-MM-DD)" },
+        "tasks": { "type": "object", "description": "Map of taskId to boolean" },
+        "reasonForIncomplete": { "type": "string", "description": "Reason why tasks were not completed" },
+        "isComplete": { "type": "boolean", "description": "Whether all tasks were completed" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["date"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profile documents"
+    },
+    "/users/{userId}/tasks/{taskId}": {
+      "schema": "Task",
+      "description": "Custom tasks for each user"
+    },
+    "/users/{userId}/daily_logs/{date}": {
+      "schema": "DailyLog",
+      "description": "Daily task logs for each user"
+    }
+  }
+}
